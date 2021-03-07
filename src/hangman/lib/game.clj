@@ -14,8 +14,32 @@
   ;; ([] (new-game (dictionary/random-word)))
   ([word] (assoc game-state :target-letters (str->list word))))
 
-(defn return-tally [game])
+(defn reveal-letter
+  "Returns the `letter` if it is in the word and has been guessed.
+  Returns `_` for the portions of the word not yet guessed."
+  [letter in-word?]
+  (case in-word?
+    false "_"
+    true letter))
 
+(defn reveal-target
+  [target-letters guessed-letters]
+  (map #(reveal-letter % (contains? guessed-letters %)) target-letters))
+
+(defn tally
+  "Returns a map representing the `tally`. In the game, the `tally` is
+  the representation of the game that the player is allowed to see."
+  [game]
+  {:game-state (:game-state game)
+   :turns-remaining (:turns-remaining game)
+   :revealed-portion-of-target (reveal-target (:target-letters game) (:already-guessed-letters game))})
+
+(defn return-tally
+  "Takes a `game` and returns a tuple of the game and the tally"
+  [game]
+  [game (tally game)])
+
+;; Not implemented
 (defn process-move [game guess already-guessed?])
 
 (defn make-move
