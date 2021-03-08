@@ -12,7 +12,7 @@
   (str/split word #""))
 
 (defn new-game
-  ;; this will be used to pull random word from dictionary once I figure out how to `require` it
+  "Returns a new game map with the given `word` or selects a random word if one is not provided."
   #_([] (new-game (dictionary/random-word)))
   ([word] (assoc game-state :target-letters (str->list word))))
 
@@ -30,8 +30,7 @@
   (map #(reveal-letter % (contains? guessed-letters %)) target-letters))
 
 (defn tally
-  "Returns a map representing the `tally`. In the game, the `tally` is
-  the representation of the game that the player is allowed to see."
+  "Returns the `tally` map. Tally is the representation of the game that the player is allowed to see."
   [game]
   {:game-state (:game-state game)
    :turns-remaining (:turns-remaining game)
@@ -42,8 +41,22 @@
   [game]
   [game (tally game)])
 
-;; Not implemented
-(defn process-move [game guess already-guessed?])
+;; Not Implemented
+(defn evaluate-guess [game guess good-guess?]
+  (case good-guess?
+    false (_)
+    true ()))
+
+(defn process-move
+  "If `guess` is `already-guessed` then player loses turn `(dec turns)`. Otherwise, `evaluate-guess`."
+  [game guess already-guessed?]
+  (case already-guessed?
+    ;; I don't know if this code works. Can I replace get-in -> conj -> assoc-in with update-in???
+    false (let [current-set (get-in game [:already-guessed-letters])
+                updated-set (conj current-set guess)
+                game (assoc-in game [:already-guessed-letters] updated-set)]
+            evaluate-guess game guess (contains? (:target-letters game) guess))
+    true (update game :turns-remaining dec)))
 
 (defn make-move
   "Takes the current state of the game `game` and a `guess` and returns the `tally"
