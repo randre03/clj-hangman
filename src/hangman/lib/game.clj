@@ -6,12 +6,14 @@
                  :target-letters []
                  :already-guessed-letters #{}})
 
-(defn str->list [word]
+(defn str->list
+  "Given `word` (string), returns a list of the letters that make up `word`."
+  [word]
   (str/split word #""))
 
 (defn new-game
   ;; this will be used to pull random word from dictionary once I figure out how to `require` it
-  ;; ([] (new-game (dictionary/random-word)))
+  #_([] (new-game (dictionary/random-word)))
   ([word] (assoc game-state :target-letters (str->list word))))
 
 (defn reveal-letter
@@ -23,6 +25,7 @@
     true letter))
 
 (defn reveal-target
+  "Returns a seq representing the word with blanks (`_`) in place of letters not yet guessed."
   [target-letters guessed-letters]
   (map #(reveal-letter % (contains? guessed-letters %)) target-letters))
 
