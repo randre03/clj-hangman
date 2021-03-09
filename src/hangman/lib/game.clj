@@ -41,11 +41,24 @@
   [game]
   [game (tally game)])
 
+(defn did-guess-win-game
+  [won-game?]
+  (case won-game?
+    false :good-guess
+    true :won))
+
 ;; Not Implemented
-(defn evaluate-guess [game guess good-guess?]
+(defn evaluate-guess [game good-guess?]
+  ;; this might be better as an if-let or when-let
   (case good-guess?
-    false (_)
-    true ()))
+    false (if (= 1 (:turns-remaining game))
+            ;; if you make a bad guess (false) with 1 turn remaining, then you just lost
+            (assoc game :turns-remaining 0 :game-state :lost)
+            ;; otherwise, you just lose a turn
+            (-> game
+                (assoc :game-state :bad-guess)
+                (update :turns-remaining dec)))
+    true nil))
 
 (defn process-move
   "If `guess` is `already-guessed` then player loses turn `(dec turns)`. Otherwise, `evaluate-guess`."
