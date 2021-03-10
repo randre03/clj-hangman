@@ -1,20 +1,13 @@
 (ns hangman.core
   (:require [hangman.lib.game :as game]))
 
-;;;; This is going to be the 'public' API for the Hangman Game
-;;;; Therefore, it just needs to expose these three functions
+;; This is the 'public' API for the Hangman Game.
 
+;; Create a new Hangman Game
+(defn new-game [] (game/new-game))
 
-(defn new-game
-  "Starts a new game."
-  []
-  (game/new-game))
+;; Get the game-state the player sees
+(defn get-tally [game] (game/tally game))
 
-(defn get-tally
-  "Returns the tally - our external game-state (what the player sees)."
-  [game]
-  (game/tally game))
-
-(defn make-move
-  "Allows the player to suggest a letter, returning the updated state."
-  [])
+;; Allows player to make a guess
+(defn make-move [game guess] (game/make-move game guess))
