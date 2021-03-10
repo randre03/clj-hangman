@@ -1,5 +1,6 @@
 (ns hangman.lib.game
-  (:require [clojure.set :as set]
+  (:require [hangman.lib.dictionary :as dictionary]
+            [clojure.set :as set]
             [clojure.string :as str]))
 
 (def game-state {:turns-remaining 7
@@ -14,7 +15,7 @@
 
 (defn new-game
   "Returns a new game map with the given `word` or selects a random word if one is not provided."
-  #_([] (new-game (dictionary/random-word)))
+  ([] (new-game (dictionary/random-word)))
   ([word] (assoc game-state :target-letters (str->list word))))
 
 (defn reveal-letter
