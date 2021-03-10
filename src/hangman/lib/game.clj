@@ -3,7 +3,7 @@
             [clojure.string :as str]))
 
 (def game-state {:turns-remaining 7
-                 :game-state :initializing
+                 :game-state :initialized
                  :target-letters []
                  :already-guessed-letters #{}})
 
@@ -46,29 +46,17 @@
   [won-game?]
   (case won-game?
     false :good-guess
-    true :won))
-
-;; FIXME:
-;; Created a new game with word `look`
-;; submitted make-move with two correct letters first (l,o)
-;; then when I submitted `z`, it blew up with "java.lang.IllegalArgumentException - No matching clause"
-;; call stack was (most recent on top):
-                  ;; game.clj:   52  hangman.lib.game/evaluate-guess
-                  ;; game.clj:   51  hangman.lib.game/evaluate-guess
-                  ;; game.clj:   72  hangman.lib.game/process-move
-                  ;; game.clj:   64  hangman.lib.game/process-move
-                  ;; game.clj:   83  hangman.lib.game/make-move
-                  ;; game.clj:   75  hangman.lib.game/make-move
+    true  :won))
 
 (defn evaluate-guess [game good-guess?]
   (case good-guess?
-    false (if (= 1 (:turns-remaining game))
+    nil (if (= 1 (:turns-remaining game))
             ;; if you make a bad guess (false) with 1 turn remaining, then you just lost
-            (assoc game :turns-remaining 0 :game-state :lost)
+          (assoc game :turns-remaining 0 :game-state :lost)
             ;; otherwise, you lose a turn
-            (-> game
-                (assoc :game-state :bad-guess)
-                (update :turns-remaining dec)))
+          (-> game
+              (assoc :game-state :bad-guess)
+              (update :turns-remaining dec)))
     true (let [letter-set (into #{} (:target-letters game))
                won-game? (set/subset? letter-set (:already-guessed-letters game))]
            (assoc game :game-state (did-guess-win-game won-game?)))))
@@ -93,7 +81,3 @@
       :won (return-tally game)
       :lost (return-tally game)
       (process-move game guess (contains? already-guessed guess)))))
-
-#_(def game (new-game "sensibility"))
-#_(def game (make-move game "s"))
-#_(def game (make-move game "i"))
