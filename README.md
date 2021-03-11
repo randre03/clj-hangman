@@ -1,44 +1,23 @@
-# hangman
+# CLJ-Hangman
 
-FIXME: description
+This is (going to be) a text-based implementation of the classic Hangman game.
+Currently, this repo includes the dictionary and the back-end of the game.
+
+Despite, and in contradiction thereof, *Separation of Concerns*, the plan is to 
+include the text-based front-end with this code as well.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+I advise against it.
 
 ## Usage
 
-FIXME: explanation
+- Install (see instructions above).
+- Load the `hangman.core` namespace into your favorite REPL.
+- In the REPL, run `(def game (new-game))` - this will start the game with a pseudo-random word.
+- In the same REPL, call `(def game (make-move game "x"))`, where `x` is a letter (your guess - which may actually be `x`).
+- Keep calling `make-move` as shown above, with your different guesses.
+- NOTE: a strict honor rule must be in force at all times. You mustn't look at any of the return values. You *can* call (tally game); however, and this will show you the state of the game you are supposed to see (hiding any letters not yet guessed).
 
-    $ java -jar hangman-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2021 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+## Attribution
+While the letters and parens are all mine, this code is based on pragdave's (aka Coding Gnome) hangman game in his excellent [introduction](https://codestool.coding-gnome.com/courses/elixir-for-programmers) to the [Elixir](https://elixir-lang.org/) programming language. While neither of these entities are associated with this repo, please do check them out.
